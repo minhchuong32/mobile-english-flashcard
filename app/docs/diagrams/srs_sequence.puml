@@ -1,0 +1,21 @@
+@startuml
+actor User
+participant "ReviewScreen" as UI
+participant "SrsViewModel" as VM
+participant "SrsRepository" as Repo
+participant "CardModel" as Card
+
+User -> UI : start review
+UI -> VM : loadDueCards()
+VM -> Repo : getCardsToReview()
+Repo -> Card : query where nextDue <= now
+Card --> Repo : list of cards
+Repo --> VM : dueCards
+VM --> UI : display card
+UI -> VM : feedback(remembered/hard/forgot)
+VM -> Repo : updateCardProgress(cardId, feedback)
+Repo -> Card : update progress fields (nextDue, interval, ease)
+Repo --> VM : updatedProgress
+VM --> UI : next card
+@enduml
+

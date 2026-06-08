@@ -1,0 +1,54 @@
+# --- Android / Gradle ---
+.gradle/
+/build/
+app/build/
+**/build/
+.externalNativeBuild/
+.cxx/
+local.properties
+*.apk
+*.aar
+*.ap_
+*.aab
+*.dex
+*.class
+
+# --- IntelliJ IDEA / Android Studio ---
+.idea/
+*.iml
+*.iws
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+
+# --- OS / System ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Logs / Dumps ---
+*.log
+*.hprof
+*.pyc
+*.pyo
+
+
+# --- Environment ---
+.env
+.env.*
+!.env.example
+
+# --- Editor / Tools ---
+.vscode/
+.sonar/
+.kotlin/
+.tmp/
+
+# --- Other ---
+bin/
+gen/
+out/

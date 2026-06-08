@@ -1,0 +1,24 @@
+@startuml
+actor User
+participant "StudyScreen" as UI
+participant "StudyViewModel" as VM
+participant "StudySessionRepo" as Repo
+participant "StudySessionApiService" as API
+participant "Server"
+
+User -> UI : Start session
+UI -> VM : startSession(deckId)
+VM -> Repo : createSession(deckId)
+Repo -> API : POST /api/study/sessions (optional)
+API -> Server : HTTP
+Server --> API : 201 { sessionId }
+API --> Repo : Response
+Repo --> VM : SessionCreated(sessionId)
+VM --> UI : show first card
+UI -> VM : submitAnswer(cardId, result)
+VM -> Repo : updateProgress(cardId, result)
+Repo -> API : PATCH /api/cards/{id}/progress (optional)
+Repo --> VM : progressUpdated
+VM -> UI : show next card or finish
+@enduml
+

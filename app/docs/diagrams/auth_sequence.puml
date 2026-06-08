@@ -1,0 +1,20 @@
+@startuml
+actor User
+participant "AuthScreen\n(Compose)" as UI
+participant "AuthViewModel" as VM
+participant "AuthRepository" as Repo
+participant "AuthApiService (Retrofit)" as API
+participant "Server"
+
+User -> UI : submit credentials
+UI -> VM : onLogin(email, pass)
+VM -> Repo : login(request)
+Repo -> API : POST /api/auth/login
+API -> Server : HTTP
+Server --> API : 200 { accessToken }
+API --> Repo : Response<LoginResponse>
+Repo --> VM : LoginResult(success, token)
+VM --> UI : update state (authenticated)
+UI -> User : navigate Home
+@enduml
+
