@@ -1,6 +1,6 @@
 package com.example.englishflashcard.feature.auth
 
-import androidx.compose.foundation.BorderStroke
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -49,16 +49,39 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit = {},
     onForgotPasswordClick: () -> Unit = {}
 ) {
+    // State local cho ô "email/tên đăng nhập" khi không truyền ViewModel (ví dụ @Preview).
+// remember giúp giữ giá trị qua các lần recomposition.
     var localIdentifier by remember { mutableStateOf("") }
+
+// State local cho ô mật khẩu (fallback khi không có ViewModel).
     var localPassword by remember { mutableStateOf("") }
+
+// State local để bật/tắt hiện mật khẩu (icon con mắt).
     var passwordVisible by remember { mutableStateOf(false) }
 
+// Giá trị hiển thị cho ô identifier:
+// - nếu có viewModel -> dùng state trong viewModel
+// - nếu không có -> dùng state local
     val identifier = viewModel?.identifier ?: localIdentifier
+
+// Tương tự cho mật khẩu: ưu tiên dữ liệu trong viewModel.
     val password = viewModel?.password ?: localPassword
+
+// Thông báo trả về từ viewModel; nếu null thì dùng chuỗi rỗng để tránh crash/null UI.
     val message = viewModel?.message.orEmpty()
+
+// Màu thông báo:
+// - lỗi -> đỏ
+// - không lỗi -> màu xanh chủ đề
     val messageColor = if (viewModel?.isError == true) Color.Red else EmeraldSecondary
+
+// Trạng thái loading của nút đăng nhập; mặc định false khi không có viewModel.
     val isLoading = viewModel?.isLoading ?: false
+
+// Tạo CoroutineScope gắn với composable hiện tại,
+// dùng để gọi hàm suspend (ví dụ login()) trong onClick.
     val scope = rememberCoroutineScope()
+
 
     Box(
         modifier = Modifier
